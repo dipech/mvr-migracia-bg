@@ -1,6 +1,6 @@
 // Only same-origin static application files are cached. Migration responses never enter Cache Storage.
-const CACHE = 'migration-shell-e83d02348bbf';
-const BUILD_ASSETS = ["assets/Scanner-gf776fSm.js","assets/index-DwltNuhJ.css","assets/index-OeRzp6CS.js"];
+const CACHE = 'migration-shell-c9ac860a8e97';
+const BUILD_ASSETS = ["assets/Scanner-D5qiNou2.js","assets/index-BwMN_msY.css","assets/index-DrmG0B9h.js"];
 const ROOT = new URL('./', self.location.href).href;
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
