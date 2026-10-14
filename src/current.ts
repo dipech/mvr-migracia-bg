@@ -37,7 +37,7 @@ export function currentDesk(desk: Desk, snapshot: QueueSnapshot): CurrentDesk {
 }
 
 export function maxCurrentNumber(ticket: TrackedTicket, snapshot: QueueSnapshot | null, now: number): string | null {
-  if (ticket.day !== dayKey(now) || !isSnapshotFresh(snapshot, now)) return null;
+  if (ticket.day !== dayKey(now) || !snapshot || dayKey(snapshot.at) !== dayKey(now)) return null;
   const own = ticket.number.match(/^(\D+)(\d+)$/u);
   if (!own) return null;
   let best: { number: string; numeric: number } | null = null;

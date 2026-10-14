@@ -112,14 +112,16 @@ async function poll(force = false) {
         const messages: AlertMessage[] = [];
         const updated = data.tracked.map(t => {
           if (t.day !== data.day) return t;
-          if (unavailable.has(t.qr)) return { ...t, error: unavailable.get(t.qr), forecast: null };
+          if (unavailable.has(t.qr)) return { ...t, error: unavailable.get(t.qr) };
           const source = perTicket.get(t.id);
           const found = source?.tickets.find(r => r.id === t.id);
-          if (!source || !found) return { ...t, error: t.error || 'Талон отсутствует в ответе. Последний статус сохранён.', forecast: null };
+          if (!source || !found) return { ...t, error: t.error || 'Талон отсутствует в ответе. Последний статус сохранён.' };
           const inconsistent = t.desks.some(n => {
             const desk = source.desks.find(d => d.number === n);
             return !desk || currentDesk(desk, source).inconsistent;
           });
+          // Keep the last estimate during an inconsistent poll, without firing new alerts.
+          if (inconsistent && found.status === 0) return { ...t, last: found, error: 'Данные окон уточняются.' };
           const forecast = found.status === 0 && !inconsistent ? makeForecast(t, source, records, intervals) : null;
           const predictions = [...t.predictions];
           if (forecast?.seconds != null && forecast.ahead !== null) predictions.push({ at: source.at, seconds: forecast.seconds, officialSeconds: forecast.officialSeconds, ahead: forecast.ahead });

@@ -92,3 +92,13 @@ describe('live board polling',()=>{
     expect(e.getSnapshot().data.tracked[0].error).toBe('Данные окон уточняются.');
   });
 });
+
+it('retains the previous forecast on inconsistent replies without new alerts',async()=>{
+  const s=state();
+  s.tracked[0].forecast={at:NOW-5000,ahead:12,officialAhead:10,officialSeconds:100,seconds:200,low:100,high:300,samples:12,confidence:'preliminary',reason:'',notes:[]};
+  store.set(STORAGE_KEY,JSON.stringify(s));
+  const a=serving('a','P809');mocked.snapshot.mockResolvedValue(snapshot([ticket(),{...a.ticket,status:9}],[a.desk]));
+  const e=await loadEngine();await e.refresh();
+  expect(e.getSnapshot().data.tracked[0].forecast).toEqual(s.tracked[0].forecast);
+  expect(e.getSnapshot().data.messages).toEqual([]);
+});

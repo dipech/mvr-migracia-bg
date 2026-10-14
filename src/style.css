@@ -11,3 +11,5 @@
 .desk-freshness p{margin:7px 0 0;font-size:11px}.desk-freshness .text-button{margin-top:5px}
 .reset-app{margin:6px 0 12px}.forecast-hero .range{margin-bottom:6px}.forecast-hero .hero-bottom{margin-top:14px}
 @media(max-width:370px){.detail-heading h1{font-size:46px}.ticket-heading-numbers{gap:15px}.current-number{padding-left:14px}.current-number>strong{font-size:24px}}
+
+.brand{font-size:22px;letter-spacing:-.6px}.brand-icon{flex-shrink:0}.connection-line{font-variant-numeric:tabular-nums}.detail-service{margin-top:24px}@media(max-width:370px){.brand{font-size:19px}}

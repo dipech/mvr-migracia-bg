@@ -34,11 +34,12 @@ describe('current desk number',()=>{
     const a=serving('a','P42');
     expect(currentDesk(desk(),snapshot([a.ticket])).inconsistent).toBe(true);
   });
-  it('has no maximum when idle, stale, from a different day or without a snapshot',()=>{
+  it('has no maximum when idle, from a different day or without a snapshot',()=>{
     expect(maxCurrentNumber(tracked(),snapshot(),NOW)).toBeNull();
     const a=serving('a','P42'),s=snapshot([a.ticket],[a.desk]);
     expect(maxCurrentNumber(tracked(),s,NOW+14999)).toBe('P42');
-    expect(maxCurrentNumber(tracked(),s,NOW+15000)).toBeNull();
+    expect(maxCurrentNumber(tracked(),s,NOW+15000)).toBe('P42');
+    expect(maxCurrentNumber(tracked(),{...s,at:NOW-86400000},NOW)).toBeNull();
     expect(maxCurrentNumber(tracked({day:'2026-10-13'}),s,NOW)).toBeNull();
     expect(maxCurrentNumber(tracked(),null,NOW)).toBeNull();
     expect(isSnapshotFresh(s,NOW-1000)).toBe(false);

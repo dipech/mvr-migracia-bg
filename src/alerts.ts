@@ -30,7 +30,7 @@ export async function systemNotification(text: string) {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   try {
     const registration = await navigator.serviceWorker?.getRegistration();
-    if (registration) await registration.showNotification('На очереди · Миграция', { body: text, icon: './icon-192.png', tag: 'migration-queue' });
-    else new Notification('На очереди · Миграция', { body: text });
+    if (registration) await registration.showNotification('Очередь в миграцию', { body: text, icon: './icon-192.png', tag: 'migration-queue' });
+    else new Notification('Очередь в миграцию', { body: text });
   } catch { /* In-app alerts remain available when OS notifications are unsupported. */ }
 }
