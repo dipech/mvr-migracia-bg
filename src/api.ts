@@ -1,6 +1,7 @@
 import { normalizeDesks, normalizeTickets, num, object } from './normalize';
 import { dayKey } from './time';
 import type { QueueSnapshot, TrackedTicket } from './types';
+export class TicketAccessError extends Error {}
 export const ORIGIN = 'https://mvr-migracia.sky.bg';
 export function parseQr(input: string): string {
   const s = input.trim();
@@ -21,8 +22,8 @@ export async function getJson(path: string, params: Record<string, string>, sign
 }
 export async function metadata(qr: string, existing?: TrackedTicket, signal?: AbortSignal): Promise<TrackedTicket> {
   const r = object(await getJson('/customer.json', { qr }, signal));
-  if (num(r.error) === 1) throw new Error('Талон с таким QR не найден');
-  if (num(r.error) === 2) throw new Error('Срок доступа к талону истёк');
+  if (num(r.error) === 1) throw new TicketAccessError('Талон с таким QR не найден. Добавьте действующий талон.');
+  if (num(r.error) === 2) throw new TicketAccessError('Срок доступа к талону истёк. Добавьте новый талон.');
   if (num(r.error) !== 0 || !r.ticket_id || !r.service_id || !r.ticket) throw new Error('Неполный ответ о талоне');
   const service = object(await getJson('/service_on_desk.json', { service: String(r.service_id) }, signal));
   if (!Array.isArray(service.desks)) throw new Error('Не удалось определить окна услуги');

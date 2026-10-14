@@ -19,11 +19,11 @@ export function Scanner({onClose,onAdd}:{onClose:()=>void;onAdd:(value:string)=>
     catch{setError('QR не найден. Выберите чёткое фото талона целиком или крупный снимок QR.');}
     finally{URL.revokeObjectURL(url);setBusy(false);}
   }
-  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="scan-title"><button className="icon-button close" onClick={onClose} aria-label="Закрыть"><X/></button><div className="eyebrow">НОВЫЙ ТАЛОН</div><h2 id="scan-title">Ваша очередь —<br/>под рукой.</h2><p className="muted">Отсканируйте QR на талоне Миграции.<br/>Номер и услугу мы найдём автоматически.</p>
+  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="scan-title"><button className="icon-button close" onClick={onClose} aria-label="Закрыть"><X/></button><div className="eyebrow">НОВЫЙ ТАЛОН</div><h2 id="scan-title">Добавить талон</h2><p className="muted">Отсканируйте QR на талоне Миграции.<br/>Номер и услугу мы найдём автоматически.</p>
     {camera?<div className="camera-view"><video ref={video} muted playsInline/><div className="scan-frame"/><button className="button secondary" onClick={()=>setCamera(false)}>Остановить камеру</button></div>:<button className="button primary full" disabled={busy} onClick={()=>{setError('');setCamera(true);}}><Camera size={20}/> Сканировать QR</button>}
     <label className={`button secondary full file-button ${busy?'disabled':''}`}><ImagePlus size={20}/> Выбрать фото талона<input aria-label="Фото QR-кода" type="file" accept="image/*" disabled={busy} onChange={e=>{const f=e.target.files?.[0];if(f)void photo(f);}}/></label>
     <div className="divider"><span>или вставьте ссылку</span></div>
     <form onSubmit={e=>{e.preventDefault();void submit(value);}}><label className="input-label" htmlFor="qr-input"><Link2 size={15}/> Ссылка или код из QR</label><input autoFocus id="qr-input" value={value} onChange={e=>setValue(e.target.value)} placeholder="https://mvr-migracia.sky.bg/…" autoCapitalize="none" autoCorrect="off" spellCheck={false}/><button className="button dark full" disabled={busy||!value.trim()}>{busy?'Добавляем…':'Отслеживать талон'}<ArrowRight size={18}/></button></form>
-    {error&&<p role="alert" className="error-box">{error}</p>}<p className="privacy-note">Фото обрабатывается на устройстве и никуда не отправляется.</p>
+    {error&&<p role="alert" className="error-box">{error}</p>}
   </section></div>;
 }
